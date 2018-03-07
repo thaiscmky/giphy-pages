@@ -17,22 +17,19 @@ function displayGifs() {
         method: "GET"
     }).then(function (response) {
         $("#gifs").empty();
-        console.log(response);
-        $.each(response.data, function(prop, value) {
-
+        $.each(response.data, function(i, value) {
                 var gamediv = $("<div>");
                 var rating = $("<p>").text("Rating: " + value.rating.toUpperCase());
                 var img = $("<img>");
-                img.attr("src", value.images.fixed_height_small_still.url);
+                localStorage.setItem('anim_'+value.id, value.images.fixed_height_small.url);
+                localStorage.setItem('still_'+value.id, value.images.fixed_height_small_still.url);
+                img.attr("src", localStorage.getItem('still_'+value.id));
+                $(img).attr("data-id",value.id);
                 gamediv.append(rating);
                 gamediv.append(img);
                 $("#gifs").append(gamediv);
-
         });
-
-
     });
-
 }
 
 function renderButtons() {
@@ -56,6 +53,14 @@ $(document).ready(function() {
         renderButtons();
     });
     $('#buttons').on("click", "button", displayGifs);
+    $('#gifs').on('click', 'img', function(){
+        $(this).toggleClass('active');
+        var giphyById = $(this).attr("data-id");
+        if($(this).hasClass('active')){
+            $(this).attr("src", localStorage.getItem('anim_'+giphyById));
+        } else
+            $(this).attr("src", localStorage.getItem('still_'+giphyById));
+    });
 });
 
 
