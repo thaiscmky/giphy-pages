@@ -1,0 +1,7 @@
+#gifs > div {
+    display:inline-block;
+    margin: 0.5em;
+}
+#gifs img.active {
+    outline: solid 3px #2db34a;
+}
